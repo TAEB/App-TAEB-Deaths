@@ -83,7 +83,7 @@ has taebdir => (
 sub _start {
     my ($self, $kernel, $session) = @_[OBJECT, KERNEL, SESSION];
 
-    my $irc = POE::Component::IRC->spawn(
+    POE::Component::IRC->spawn(
         nick     => $self->nick,
         username => $self->username,
         server   => $self->server,
