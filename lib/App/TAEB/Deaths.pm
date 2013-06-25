@@ -24,7 +24,7 @@ has nick => (
     required => 1,
 );
 
-has ircname => (
+has username => (
     is       => 'rw',
     isa      => 'Str',
     required => 1,
@@ -84,9 +84,9 @@ sub _start {
     my ($self, $kernel, $session) = @_[OBJECT, KERNEL, SESSION];
 
     my $irc = POE::Component::IRC->spawn(
-        nick    => $self->nick,
-        ircname => $self->ircname,
-        server  => $self->server,
+        nick     => $self->nick,
+        username => $self->username,
+        server   => $self->server,
     ) or die "Unable to spawn POE::Component::IRC: $!";
 
     $kernel->signal($kernel, 'POCOIRC_REGISTER', $session->ID(), 'all');
