@@ -2,8 +2,9 @@
 from:
     -
         channel: '#watch_channel'
-        announcer: 'Foo'
+        announcer: Foo
         death_re: '^\w+ \(\w+ \w+ \w+ \w+\)'
 to: '#mirror_channel'
-server: 'chat.freenode.net'
-nick: 'taebdeaths'
+server: chat.freenode.net
+nick: taebdeaths
+ircname: taeb
