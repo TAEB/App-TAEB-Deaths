@@ -4,6 +4,10 @@ from:
         channel: '#watch_channel'
         announcer: Foo
         death_re: '^\w+ \(\w+ \w+ \w+ \w+\)'
+        watch:
+            - TAEB1
+            - TAEB2
+            - TAEB3
 to: '#mirror_channel'
 server: chat.freenode.net
 nick: taebdeaths
