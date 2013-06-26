@@ -36,6 +36,12 @@ has from => (
     required => 1,
 );
 
+has watch => (
+    is      => 'rw',
+    isa     => 'HashRef',
+    default => sub { {} },
+);
+
 has to => (
     is       => 'rw',
     isa      => 'Str',
@@ -102,8 +108,11 @@ sub irc_001 {
     my ($self, $sender) = @_[OBJECT, SENDER];
     my $irc = $sender->get_heap();
 
-    my @from_channels = map { $_->{channel} } @{ $self->from };
-    $irc->yield(join => $_) for @from_channels;
+    for my $chan (@{ $self->from }) {
+        my $channel = $chan->{channel};
+        $self->watch->{$channel} = $chan;
+        $irc->yield(join => $channel);
+    }
 }
 
 sub irc_public {
