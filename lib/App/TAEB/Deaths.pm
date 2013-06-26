@@ -120,6 +120,30 @@ sub irc_001 {
 }
 
 sub irc_public {
+    my ($self, $sender, $who, $where, $msg) = @_[OBJECT, SENDER, ARG0..ARG2];
+
+    my $nick = (split '!', $who)[0];
+    my $channel = $where->[0];
+
+    # Check that the message is in the right channel.
+    return unless exists $self->watch->{$channel};
+
+    # Check that the message in the channel is from the right nick.
+    my $watched = $self->watch->{$channel};
+    return unless $nick eq $watched->{announcer};
+
+    # Check that it's a death message.
+    my $death_re = $watched->{death_re};
+    my $re = qr/$death_re/;
+    return unless $msg =~ $re;
+
+    # The death regex should have a capture around the nick. Check that that
+    # nick is a desired death to relay.
+    return unless $watched->{_watch}->{lc $1};
+
+    # Everything has passed, so relay the message!
+    my $irc = $sender->get_heap();
+    $irc->yield(privmsg => $self->to => $msg);
 }
 
 
