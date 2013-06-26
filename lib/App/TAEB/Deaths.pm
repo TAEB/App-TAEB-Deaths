@@ -12,6 +12,20 @@ use File::Spec;
 use File::HomeDir;
 use Cwd 'abs_path';
 
+has '+configfile' => (
+    default => sub {
+        my $taebdir = $ENV{TAEBDIR};
+        $taebdir ||= File::Spec->catdir(File::HomeDir->my_home, '.taeb');
+        $taebdir = abs_path($taebdir);
+        return File::Spec->catdir($taebdir, 'deaths.yml') if -d $taebdir;
+        mkdir $taebdir, 0700 or do {
+            local $SIG{__DIE__} = 'DEFAULT';
+            die "Please create a $taebdir directory.\n";
+        };
+        return File::Spec->catdir($taebdir, 'deaths.yml');
+    },
+);
+
 has server => (
     is       => 'rw',
     isa      => 'Str',
@@ -68,21 +82,6 @@ has session => (
                 ],
             ],
         );
-    },
-);
-
-has taebdir => (
-    is      => 'ro',
-    isa     => 'Str',
-    default => sub {
-        my $taebdir = $ENV{TAEBDIR};
-        $taebdir ||= File::Spec->catdir(File::HomeDir->my_home, '.taeb');
-        $taebdir = abs_path($taebdir);
-        return $taebdir if -d $taebdir;
-        mkdir $taebdir, 0700 or do {
-            local $SIG{__DIE__} = 'DEFAULT';
-            die "Please create a $taebdir directory.\n";
-        };
     },
 );
 
