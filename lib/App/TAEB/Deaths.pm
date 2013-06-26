@@ -85,14 +85,22 @@ has session => (
     },
 );
 
+has irc => (
+    is  => 'rw',
+    isa => 'POE::Component::IRC',
+);
+
 sub _start {
     my ($self, $kernel, $session) = @_[OBJECT, KERNEL, SESSION];
 
-    POE::Component::IRC->spawn(
+    return if defined($self->irc);
+
+    my $irc = POE::Component::IRC->spawn(
         nick     => $self->nick,
         username => $self->username,
         server   => $self->server,
     ) or die "Unable to spawn POE::Component::IRC: $!";
+    $self->irc($irc);
 
     $kernel->signal($kernel, 'POCOIRC_REGISTER', $session->ID(), 'all');
 }
