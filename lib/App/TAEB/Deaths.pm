@@ -111,6 +111,8 @@ sub irc_001 {
     for my $chan (@{ $self->from }) {
         my $channel = $chan->{channel};
         $self->watch->{$channel} = $chan;
+        $self->watch->{$channel}->{_watch} = {};
+        $self->watch->{$channel}->{_watch}->{$_} = 1 for @{$chan->{watch}};
         $irc->yield(join => $channel);
     }
 }
