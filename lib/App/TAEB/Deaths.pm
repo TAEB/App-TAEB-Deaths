@@ -112,7 +112,7 @@ sub irc_001 {
         my $channel = $chan->{channel};
         $self->watch->{$channel} = $chan;
         $self->watch->{$channel}->{_watch} = {};
-        $self->watch->{$channel}->{_watch}->{$_} = 1 for @{$chan->{watch}};
+        $self->watch->{$channel}->{_watch}->{lc $_} = 1 for @{$chan->{watch}};
         $irc->yield(join => $channel);
     }
 }
