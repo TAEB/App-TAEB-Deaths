@@ -115,6 +115,8 @@ sub irc_001 {
         $self->watch->{$channel}->{_watch}->{lc $_} = 1 for @{$chan->{watch}};
         $irc->yield(join => $channel);
     }
+
+    $irc->yield(join => $self->to);
 }
 
 sub irc_public {
