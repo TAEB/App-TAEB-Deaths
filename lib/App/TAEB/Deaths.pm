@@ -5,9 +5,6 @@ with 'MooseX::SimpleConfig';
 with 'MooseX::Getopt::Dashes';
 
 use POE qw(Component::IRC);
-use Getopt::Long;
-use YAML;
-
 use File::Spec;
 use File::HomeDir;
 use Cwd 'abs_path';
