@@ -113,7 +113,7 @@ sub irc_001 {
     my $irc = $sender->get_heap();
 
     for my $chan (@{ $self->from }) {
-        my $channel = $chan->{channel};
+        my $channel = lc $chan->{channel};
         $self->watch->{$channel} = $chan;
         $self->watch->{$channel}->{_watch} = {};
         $self->watch->{$channel}->{_watch}->{lc $_} = 1 for @{$chan->{watch}};
@@ -127,7 +127,7 @@ sub irc_public {
     my ($self, $sender, $who, $where, $msg) = @_[OBJECT, SENDER, ARG0..ARG2];
 
     my $nick = (split '!', $who)[0];
-    my $channel = $where->[0];
+    my $channel = lc $where->[0];
 
     # Check that the message is in the right channel.
     return unless exists $self->watch->{$channel};
